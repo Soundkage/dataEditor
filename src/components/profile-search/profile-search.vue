@@ -16,15 +16,15 @@
 <script>
 export default {
   name: 'ProfileSearch',
-  data() {
-    return {}
+  setup() {
+    return {};
   },
   methods: {
     runSearch(event) {
-      console.log('Search for', event.target.value)
+      console.log('Search for', event.target.value);
     }
   }
-}
+};
 </script>
 
 <style>

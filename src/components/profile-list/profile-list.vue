@@ -5,30 +5,32 @@
         <div class="list__cell">User Profiles</div>
       </div>
     </div>
+    <Loading v-if="isLoading" />
     <div class="list__body">
-      <div class="list__row">
-        <div class="list__cell">Stephens Townsend</div>
-      </div>
-      <div class="list__row">
-        <div class="list__cell">Padilla Blair</div>
-      </div>
-      <div class="list__row">
-        <div class="list__cell">Mercado West</div>
+      <div class="list__row" :key="profile._id" v-for="profile in profiles">
+        <div class="list__cell">{{ profile.name }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Loading from '../loading/loading.vue';
+
 export default {
   name: 'ProfileList',
-  props: {},
-  data() {
-    return {
-      isSelected: false
-    }
-  }
-}
+  props: {
+    profiles: Object,
+    isLoading: Boolean
+  },
+  components: {
+    Loading
+  },
+  setup() {
+    return {};
+  },
+  methods: {}
+};
 </script>
 
 <style>
@@ -64,9 +66,11 @@ export default {
 
 .list__row {
   cursor: pointer;
+  border-bottom: 1px solid #ececec;
 }
 
 .list__row:last-child {
+  border-bottom: none;
   background: linear-gradient(
     0deg,
     rgba(143, 155, 175, 0.15) 0%,
