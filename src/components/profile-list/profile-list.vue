@@ -26,9 +26,9 @@ export default {
   data() {
     return {
       isSelected: false
-    };
+    }
   }
-};
+}
 </script>
 
 <style>
@@ -36,6 +36,7 @@ export default {
   width: 60vw;
   margin: auto;
   border: 1px solid #ececec;
+  border-bottom-color: #c7c7c7;
   border-radius: 5px;
   box-shadow: 0px 5px 8px -5px rgba(0, 0, 0, 0.2);
 }
@@ -49,8 +50,10 @@ export default {
 }
 
 .list__head .list__row,
-.list__head .list__row:hover {
-  background-color: #2c3e50;
+.list__head .list__row:hover,
+.list__head .list__row:last-child:hover,
+.list__head .list__row:last-child {
+  background: #2c3e50;
   border-radius: 5px 5px 0 0;
   cursor: default;
 }
@@ -63,12 +66,22 @@ export default {
   cursor: pointer;
 }
 
-.list__row:hover {
+.list__row:last-child {
+  background: linear-gradient(
+    0deg,
+    rgba(143, 155, 175, 0.15) 0%,
+    rgba(253, 187, 46, 0) 50%
+  );
+}
+
+.list__row:hover,
+.list__row:last-child:hover {
   background-color: #ececec;
 }
 
 .list__row:active,
-.list__row--active {
+.list__row--active,
+.list__row:active:last-child {
   background-color: #dedede;
 }
 
