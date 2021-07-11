@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <ProfileSearch />
-    <ProfileList :profiles="peopleData" :is-loading="isLoading" />
+    <ProfileSearch @searching="updateList" />
+    <ProfileList :profiles="listToLoad" :is-loading="isLoading" />
   </div>
 </template>
 
@@ -10,12 +10,13 @@ import ProfileSearch from '../components/profile-search/profile-search.vue';
 import ProfileList from '../components/profile-list/profile-list.vue';
 import { onBeforeMount, ref } from '@vue/runtime-core';
 
+const peopleData = ref(null);
+const listToLoad = ref(null);
+const isLoading = ref(true);
+
 export default {
   name: 'Home',
   setup() {
-    const peopleData = ref(null);
-    const isLoading = ref(true);
-
     const getData = async () => {
       /**
        * Uploaded data to mocklab so I could use fetch
@@ -37,7 +38,8 @@ export default {
           return response.json();
         })
         .then(people => {
-          peopleData.value = people;
+          peopleData.value = people; // Need to keep an unedited copy
+          listToLoad.value = peopleData.value;
           isLoading.value = false;
         })
         .catch(error => {
@@ -51,6 +53,7 @@ export default {
 
     return {
       peopleData,
+      listToLoad,
       isLoading
     };
   },
@@ -58,6 +61,15 @@ export default {
     ProfileSearch,
     ProfileList
   },
-  methods: {}
+  methods: {
+    updateList: searchString => {
+      listToLoad.value = peopleData.value;
+      let newList = Object.values(peopleData.value).filter(person => {
+        return person.name.toLowerCase().indexOf(searchString) !== -1;
+      });
+
+      listToLoad.value = newList;
+    }
+  }
 };
 </script>

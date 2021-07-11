@@ -19,9 +19,10 @@ export default {
   setup() {
     return {};
   },
+  emits: ['searching'],
   methods: {
     runSearch(event) {
-      console.log('Search for', event.target.value);
+      this.$emit('searching', event.target.value);
     }
   }
 };
