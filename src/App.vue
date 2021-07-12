@@ -7,6 +7,15 @@
 </template>
 
 <style>
+:root {
+  --primary-color: #2c3e50;
+  --primary-color-dark: #222e3b;
+  --primary-color-light: #3a5269;
+  --secondary-color: #42b983;
+  --secondary-color-dark: #3ba575;
+  --secondary-color-light: #56d29a;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -16,7 +25,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: var(--primary-color);
   font-size: 16px;
 }
 
@@ -26,7 +35,7 @@
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: var(--primary-color);
 }
 
 #nav a.router-link-exact-active {
@@ -41,28 +50,28 @@
   padding: 10px 20px;
   font-size: 1em;
   border-radius: 5px;
-  border-bottom: 1px solid #2c3e50;
-  background-color: #2c3e50;
+  border-bottom: 1px solid var(--primary-color);
+  background-color: var(--primary-color);
   color: #f5f5f5;
 }
 
 .button:hover {
-  background-color: #3a5269;
+  background-color: var(--primary-color-light);
 }
 
 .button:active {
-  background-color: #222e3b;
+  background-color: var(--primary-color-dark);
 }
 
 .button--green {
-  background-color: #42b983;
+  background-color: var(--secondary-color);
 }
 
 .button:hover.button--green {
-  background-color: #56d29a;
+  background-color: var(--secondary-color-light);
 }
 
 .button:active.button--green {
-  background-color: #3ba575;
+  background-color: var(--secondary-color-dark);
 }
 </style>

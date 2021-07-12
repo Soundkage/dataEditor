@@ -83,13 +83,12 @@ export default {
       console.log('Export list');
     },
     updateList: searchString => {
-      listToLoad.value = peopleData.value;
       const newList = Object.values(peopleData.value).filter(person => {
         return (
           person.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1
         );
       });
-
+      store.commit('SET_PROFILE_DATA_TO_LOAD', newList);
       listToLoad.value = newList;
     },
     rowClicked: profile => {

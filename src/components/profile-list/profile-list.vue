@@ -55,7 +55,7 @@ export default {
 }
 
 .list__head {
-  background-color: #2c3e50;
+  background-color: var(--primary-color);
   font-size: 1.2em;
   font-weight: bold;
   border-radius: 5px 5px 0 0;
@@ -66,7 +66,7 @@ export default {
 .list__head .list__row:hover,
 .list__head .list__row:last-child:hover,
 .list__head .list__row:last-child {
-  background: #2c3e50;
+  background: var(--primary-color);
   border-radius: 5px 5px 0 0;
   cursor: default;
 }

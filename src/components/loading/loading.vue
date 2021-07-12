@@ -54,7 +54,7 @@ export default {
   width: 1rem;
   height: 1rem;
   margin: 2rem 0.3rem;
-  background: #42b983;
+  background: var(--secondary-color);
   border-radius: 50%;
   animation: 0.9s bounce infinite alternate;
 }
