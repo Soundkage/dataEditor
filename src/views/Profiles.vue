@@ -2,6 +2,7 @@
   <div class="profiles">
     <ProfileSearch @searching="updateList" />
     <ExportButton :data="peopleData" />
+    <Pagination />
     <ProfileList :profiles="listToLoad" @row-clicked="rowClicked" />
   </div>
   <Modal
@@ -16,6 +17,7 @@
 import ProfileSearch from '../components/profile-search/profile-search.vue';
 import ProfileList from '../components/profile-list/profile-list.vue';
 import ExportButton from '../components/export-button/export-button.vue';
+import Pagination from '../components/pagination/pagination.vue';
 import Modal from '../components/modal/modal.vue';
 import store from '../store';
 import { onBeforeMount, ref } from '@vue/runtime-core';
@@ -47,12 +49,15 @@ export default {
           if (!response.ok) {
             throw `[Profiles View] Request Error | ${response.statusText}`;
           }
+
           return response.json();
         })
         .then(people => {
           store.commit('SET_PROFILE_DATA', people);
           store.commit('SET_PROFILE_DATA_TO_LOAD', people);
           store.commit('SET_ISLOADING', false);
+
+          // TODO: Refactor where possible with regards to vuex store
           peopleData.value = people; // Need to keep an unedited copy in mem
           listToLoad.value = peopleData.value;
         })
@@ -76,6 +81,7 @@ export default {
     ProfileSearch,
     ProfileList,
     ExportButton,
+    Pagination,
     Modal
   },
   methods: {
