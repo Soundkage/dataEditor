@@ -5,9 +5,14 @@
         <div class="list__cell">User Profiles</div>
       </div>
     </div>
-    <Loading v-if="isLoading" />
     <div class="list__body">
-      <div class="list__row" :key="profile._id" v-for="profile in profiles">
+      <Loading :component-name="'Profile list'" v-if="isLoading" />
+      <div
+        class="list__row"
+        :key="profile._id"
+        v-for="profile in profiles"
+        @click="onRowClicked(profile)"
+      >
         <div class="list__cell">{{ profile.name }}</div>
       </div>
     </div>
@@ -26,10 +31,13 @@ export default {
   components: {
     Loading
   },
-  setup() {
-    return {};
-  },
-  methods: {}
+  emits: ['row-clicked'],
+  methods: {
+    onRowClicked(profile) {
+      this.$emit('row-clicked', profile);
+      console.log('row clicked');
+    }
+  }
 };
 </script>
 
@@ -62,6 +70,18 @@ export default {
 
 .list__body {
   border-radius: 0 0 5px 5px;
+}
+
+.list__body:empty {
+  min-height: 100px;
+  line-height: 1em;
+}
+
+.list__body:empty::after {
+  content: 'No content found';
+  font-weight: bold;
+  font-size: 1.2em;
+  line-height: 5em;
 }
 
 .list__row {

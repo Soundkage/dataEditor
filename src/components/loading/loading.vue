@@ -1,6 +1,7 @@
 <template>
   <div class="loading">
     <div class="loading__container">
+      <p>Loading {{ componentName.toLowerCase() }} ...</p>
       <div class="loader">
         <div class="loader__dot"></div>
         <div class="loader__dot"></div>
@@ -12,7 +13,10 @@
 
 <script>
 export default {
-  name: 'Loading'
+  name: 'Loading',
+  props: {
+    componentName: String
+  }
 };
 </script>
 

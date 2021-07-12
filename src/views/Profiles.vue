@@ -1,21 +1,33 @@
 <template>
-  <div class="home">
+  <div class="profiles">
     <ProfileSearch @searching="updateList" />
-    <ProfileList :profiles="listToLoad" :is-loading="isLoading" />
+    <ProfileList
+      :profiles="listToLoad"
+      :is-loading="isLoading"
+      @row-clicked="rowClicked"
+    />
   </div>
+  <Modal
+    :show="showModal"
+    :profile="profileData"
+    @updated-show="updateShowModal"
+  />
 </template>
 
 <script>
 import ProfileSearch from '../components/profile-search/profile-search.vue';
 import ProfileList from '../components/profile-list/profile-list.vue';
+import Modal from '../components/modal/modal.vue';
 import { onBeforeMount, ref } from '@vue/runtime-core';
 
 const peopleData = ref(null);
 const listToLoad = ref(null);
 const isLoading = ref(true);
+const showModal = ref(false);
+const profileData = ref(null);
 
 export default {
-  name: 'Home',
+  name: 'Profiles',
   setup() {
     const getData = async () => {
       /**
@@ -33,17 +45,17 @@ export default {
       })
         .then(response => {
           if (!response.ok) {
-            throw `[Home View] Fetch Error | ${response.statusText}`;
+            throw `[Profiles View] Request Error | ${response.statusText}`;
           }
           return response.json();
         })
         .then(people => {
-          peopleData.value = people; // Need to keep an unedited copy
+          peopleData.value = people; // Need to keep an unedited copy in mem
           listToLoad.value = peopleData.value;
           isLoading.value = false;
         })
         .catch(error => {
-          throw `[Home View] Error retreiving data | ${error}`;
+          throw `[Profiles View] Error retreiving data | ${error}`;
         });
     };
 
@@ -54,21 +66,34 @@ export default {
     return {
       peopleData,
       listToLoad,
-      isLoading
+      isLoading,
+      showModal,
+      profileData
     };
   },
   components: {
     ProfileSearch,
-    ProfileList
+    ProfileList,
+    Modal
   },
   methods: {
     updateList: searchString => {
       listToLoad.value = peopleData.value;
-      let newList = Object.values(peopleData.value).filter(person => {
-        return person.name.toLowerCase().indexOf(searchString) !== -1;
+      const newList = Object.values(peopleData.value).filter(person => {
+        return (
+          person.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1
+        );
       });
 
       listToLoad.value = newList;
+    },
+    rowClicked: profile => {
+      showModal.value = true;
+      profileData.value = profile;
+      console.log(profile);
+    },
+    updateShowModal: show => {
+      showModal.value = show;
     }
   }
 };
