@@ -9,7 +9,6 @@
         @keyup="runSearch"
       />
     </div>
-    <div class="button"></div>
   </div>
 </template>
 

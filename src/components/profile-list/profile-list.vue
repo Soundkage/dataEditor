@@ -21,22 +21,25 @@
 
 <script>
 import Loading from '../loading/loading.vue';
+import store from '../../store';
 
 export default {
   name: 'ProfileList',
   props: {
-    profiles: Object,
-    isLoading: Boolean
+    profiles: Object
   },
   components: {
     Loading
   },
   emits: ['row-clicked'],
   methods: {
-    onRowClicked(profile) {
+    onRowClicked: profile => {
       this.$emit('row-clicked', profile);
       console.log('row clicked');
     }
+  },
+  computed: {
+    isLoading: () => store.getters.isLoading
   }
 };
 </script>

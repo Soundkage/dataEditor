@@ -1,28 +1,27 @@
 <template>
   <div class="profiles">
     <ProfileSearch @searching="updateList" />
-    <ProfileList
-      :profiles="listToLoad"
-      :is-loading="isLoading"
-      @row-clicked="rowClicked"
-    />
+    <ExportButton :data="peopleData" />
+    <ProfileList :profiles="listToLoad" @row-clicked="rowClicked" />
   </div>
   <Modal
     :show="showModal"
     :profile="profileData"
     @updated-show="updateShowModal"
+    @save-profile-changes="updatePeopleData"
   />
 </template>
 
 <script>
 import ProfileSearch from '../components/profile-search/profile-search.vue';
 import ProfileList from '../components/profile-list/profile-list.vue';
+import ExportButton from '../components/export-button/export-button.vue';
 import Modal from '../components/modal/modal.vue';
+import store from '../store';
 import { onBeforeMount, ref } from '@vue/runtime-core';
 
 const peopleData = ref(null);
 const listToLoad = ref(null);
-const isLoading = ref(true);
 const showModal = ref(false);
 const profileData = ref(null);
 
@@ -30,6 +29,7 @@ export default {
   name: 'Profiles',
   setup() {
     const getData = async () => {
+      store.commit('SET_ISLOADING', true);
       /**
        * Uploaded data to mocklab so I could use fetch
        * The link provided was throwing CORS errors
@@ -50,9 +50,11 @@ export default {
           return response.json();
         })
         .then(people => {
+          store.commit('SET_PROFILE_DATA', people);
+          store.commit('SET_PROFILE_DATA_TO_LOAD', people);
+          store.commit('SET_ISLOADING', false);
           peopleData.value = people; // Need to keep an unedited copy in mem
           listToLoad.value = peopleData.value;
-          isLoading.value = false;
         })
         .catch(error => {
           throw `[Profiles View] Error retreiving data | ${error}`;
@@ -66,7 +68,6 @@ export default {
     return {
       peopleData,
       listToLoad,
-      isLoading,
       showModal,
       profileData
     };
@@ -74,9 +75,13 @@ export default {
   components: {
     ProfileSearch,
     ProfileList,
+    ExportButton,
     Modal
   },
   methods: {
+    exportList: () => {
+      console.log('Export list');
+    },
     updateList: searchString => {
       listToLoad.value = peopleData.value;
       const newList = Object.values(peopleData.value).filter(person => {
@@ -94,6 +99,9 @@ export default {
     },
     updateShowModal: show => {
       showModal.value = show;
+    },
+    updatePeopleData: () => {
+      console.log('Profiles updatePeopleData');
     }
   }
 };
