@@ -1,19 +1,19 @@
 <template>
-  <div class="list profile-list">
-    <div class="list__head">
-      <div class="list__row">
-        <div class="list__cell">User Profiles</div>
+  <div class="table profile-table">
+    <div class="table__head">
+      <div class="table__row">
+        <div class="table__cell">User Profiles</div>
       </div>
     </div>
-    <div class="list__body">
-      <Loading :component-name="'Profile list'" v-if="isLoading" />
+    <div class="table__body">
+      <Loading :component-name="'Profile table'" v-if="isLoading" />
       <div
-        class="list__row"
+        class="table__row"
         :key="profile._id"
         v-for="profile in profiles"
         @click="onRowClicked(profile)"
       >
-        <div class="list__cell">{{ profile.name }}</div>
+        <div class="table__cell">{{ profile.name }}</div>
       </div>
     </div>
   </div>
@@ -45,7 +45,7 @@ export default {
 </script>
 
 <style>
-.list {
+.table {
   width: 60vw;
   margin: auto;
   border: 1px solid #ececec;
@@ -54,7 +54,7 @@ export default {
   box-shadow: 0px 5px 8px -5px rgba(0, 0, 0, 0.2);
 }
 
-.list__head {
+.table__head {
   background-color: var(--primary-color);
   font-size: 1.2em;
   font-weight: bold;
@@ -62,37 +62,37 @@ export default {
   color: #42b983;
 }
 
-.list__head .list__row,
-.list__head .list__row:hover,
-.list__head .list__row:last-child:hover,
-.list__head .list__row:last-child {
+.table__head .table__row,
+.table__head .table__row:hover,
+.table__head .table__row:last-child:hover,
+.table__head .table__row:last-child {
   background: var(--primary-color);
   border-radius: 5px 5px 0 0;
   cursor: default;
 }
 
-.list__body {
+.table__body {
   border-radius: 0 0 5px 5px;
 }
 
-.list__body:empty {
+.table__body:empty {
   min-height: 100px;
   line-height: 1em;
 }
 
-.list__body:empty::after {
+.table__body:empty::before {
   content: 'No content found';
   font-weight: bold;
   font-size: 1.2em;
   line-height: 5em;
 }
 
-.list__row {
+.table__row {
   cursor: pointer;
   border-bottom: 1px solid #ececec;
 }
 
-.list__row:last-child {
+.table__row:last-child {
   border-bottom: none;
   background: linear-gradient(
     0deg,
@@ -101,18 +101,18 @@ export default {
   );
 }
 
-.list__row:hover,
-.list__row:last-child:hover {
+.table__row:hover,
+.table__row:last-child:hover {
   background-color: #ececec;
 }
 
-.list__row:active,
-.list__row--active,
-.list__row:active:last-child {
+.table__row:active,
+.table__row--active,
+.table__row:active:last-child {
   background-color: #dedede;
 }
 
-.list__cell {
+.table__cell {
   padding: 20px;
 }
 </style>

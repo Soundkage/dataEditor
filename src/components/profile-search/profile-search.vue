@@ -15,9 +15,6 @@
 <script>
 export default {
   name: 'ProfileSearch',
-  setup() {
-    return {};
-  },
   emits: ['searching'],
   methods: {
     runSearch(event) {

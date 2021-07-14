@@ -6,7 +6,9 @@ const store = createStore({
     profileData: {},
     profileDataToLoad: {},
     pagination: [],
-    numberOfPages: 0
+    numberOfPages: [],
+    activePage: 1,
+    numItemsPerPage: 10
   },
   mutations: {
     SET_ISLOADING(state, loadingState) {
@@ -17,21 +19,26 @@ const store = createStore({
     },
     SET_PROFILE_DATA_TO_LOAD(state, data) {
       state.profileDataToLoad = data;
+      state.numberOfPages = [];
 
-      const itemsPerPage = 10;
-      let numOfPages = Object.keys(data).length / itemsPerPage;
+      let numOfPages = Object.keys(data).length / state.numItemsPerPage;
       numOfPages = Number.isInteger(numOfPages)
         ? numOfPages
         : Math.floor(numOfPages) + 1;
 
       state.numberOfPages = numOfPages;
+    },
+    SET_ACTIVE_PAGE(state, data) {
+      state.activePage = data;
     }
   },
-  actions: {},
   getters: {
     getProfileData: state => state.profileDataToLoad,
     isLoading: state => state.isLoading,
-    totalListLength: state => Object.keys(state.profileData).length
+    totalListLength: state => Object.keys(state.profileData).length,
+    numberOfPages: state => state.numberOfPages,
+    getActivePage: state => state.activePage,
+    getnumItemsPerPage: state => state.numItemsPerPage
   }
 });
 

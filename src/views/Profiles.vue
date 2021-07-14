@@ -1,9 +1,9 @@
 <template>
   <div class="profiles">
-    <ProfileSearch @searching="updateList" />
+    <ProfileSearch @searching="updateFromSearch" />
     <ExportButton :data="peopleData" />
-    <Pagination />
     <ProfileList :profiles="listToLoad" @row-clicked="rowClicked" />
+    <Pagination @changePage="loadPage" />
   </div>
   <Modal
     :show="showModal"
@@ -30,6 +30,19 @@ const profileData = ref(null);
 export default {
   name: 'Profiles',
   setup() {
+    const loadPage = () => {
+      const activePage = store.getters.getActivePage;
+      const itemsPerPage = store.getters.getnumItemsPerPage;
+
+      let startIndex = activePage === 1 ? 0 : (activePage - 1) * itemsPerPage;
+      let endIndex =
+        activePage === 1 ? itemsPerPage : itemsPerPage * activePage;
+
+      listToLoad.value = peopleData.value.filter(
+        (person, index) => startIndex <= index && index < endIndex
+      );
+    };
+
     const getData = async () => {
       store.commit('SET_ISLOADING', true);
       /**
@@ -59,22 +72,24 @@ export default {
 
           // TODO: Refactor where possible with regards to vuex store
           peopleData.value = people; // Need to keep an unedited copy in mem
-          listToLoad.value = peopleData.value;
         })
         .catch(error => {
           throw `[Profiles View] Error retreiving data | ${error}`;
         });
     };
 
-    onBeforeMount(() => {
-      getData();
+    onBeforeMount(async () => {
+      console.log('>>>> Profiles onBeforeMount');
+      await getData();
+      loadPage();
     });
 
     return {
       peopleData,
       listToLoad,
       showModal,
-      profileData
+      profileData,
+      loadPage
     };
   },
   components: {
@@ -85,10 +100,10 @@ export default {
     Modal
   },
   methods: {
-    exportList: () => {
+    exportList() {
       console.log('Export list');
     },
-    updateList: searchString => {
+    updateFromSearch: searchString => {
       const newList = Object.values(peopleData.value).filter(person => {
         return (
           person.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1
@@ -97,15 +112,15 @@ export default {
       store.commit('SET_PROFILE_DATA_TO_LOAD', newList);
       listToLoad.value = newList;
     },
-    rowClicked: profile => {
+    rowClicked(profile) {
       showModal.value = true;
       profileData.value = profile;
       console.log(profile);
     },
-    updateShowModal: show => {
+    updateShowModal(show) {
       showModal.value = show;
     },
-    updatePeopleData: () => {
+    updatePeopleData() {
       console.log('Profiles updatePeopleData');
     }
   }
