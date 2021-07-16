@@ -1,9 +1,15 @@
 <template>
   <div class="profiles">
-    <ProfileSearch @searching="updateFromSearch" />
+    <Header class="profiles-header" :title="'Profiles'" />
     <ExportButton :data="peopleData" />
-    <ProfileList :profiles="listToLoad" @row-clicked="rowClicked" />
-    <Pagination @changePage="loadPage" />
+    <ProfileSearch @searching="updateFromSearch" />
+    <Loading v-if="isLoading" :component-name="'Profile table'" />
+    <ProfileList
+      v-if="!isLoading"
+      :profiles="listToLoad"
+      @row-clicked="rowClicked"
+    />
+    <Pagination v-if="!isLoading" @changePage="loadPage" />
   </div>
   <Modal
     :show="showModal"
@@ -14,10 +20,12 @@
 </template>
 
 <script>
+import Header from '../components/header/header.vue';
 import ProfileSearch from '../components/profile-search/profile-search.vue';
 import ProfileList from '../components/profile-list/profile-list.vue';
 import ExportButton from '../components/export-button/export-button.vue';
 import Pagination from '../components/pagination/pagination.vue';
+import Loading from '../components/loading/loading.vue';
 import Modal from '../components/modal/modal.vue';
 import store from '../store';
 import { onBeforeMount, ref } from '@vue/runtime-core';
@@ -79,7 +87,6 @@ export default {
     };
 
     onBeforeMount(async () => {
-      console.log('>>>> Profiles onBeforeMount');
       await getData();
       loadPage();
     });
@@ -97,7 +104,9 @@ export default {
     ProfileList,
     ExportButton,
     Pagination,
-    Modal
+    Loading,
+    Modal,
+    Header
   },
   methods: {
     exportList() {
@@ -123,6 +132,26 @@ export default {
     updatePeopleData() {
       console.log('Profiles updatePeopleData');
     }
+  },
+  computed: {
+    isLoading: () => store.getters.isLoading
   }
 };
 </script>
+
+<style>
+.profiles {
+  position: relative;
+  margin: auto;
+}
+
+.profiles-header {
+  display: inline-block;
+}
+
+@media screen and (min-width: 680px) {
+  .profiles {
+    width: 60vw;
+  }
+}
+</style>

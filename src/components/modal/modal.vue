@@ -2,69 +2,119 @@
   <div class="modal" :class="{ 'modal--show': show }">
     <div class="modal__container">
       <form class="form">
+        <h3 class="form__title">Details</h3>
         <div class="form-group">
-          <label for="form__name">Name:</label>
-          <input
-            id="form__name"
-            class="form__input"
-            name="name"
-            type="text"
-            :value="profile ? profile.name : ''"
-            placeholder="Name"
-          />
+          <div class="form-input-group">
+            <label class="form__label" for="name">Name</label>
+            <input
+              id="form__name"
+              class="form__input"
+              name="name"
+              type="text"
+              :value="profile ? profile.name : ''"
+              placeholder="Name"
+            />
+          </div>
+          <div class="form-input-group">
+            <label class="form__label" for="age">Age</label>
+            <input
+              id="form__age"
+              class="form__input"
+              name="age"
+              type="number"
+              :value="profile ? profile.age : 0"
+              placeholder="Age"
+            />
+          </div>
         </div>
         <div class="form-group">
-          <label for="form__age">Age:</label>
-          <input
-            id="form__age"
-            class="form__input"
-            name="age"
-            type="number"
-            :value="profile ? profile.age : 0"
-            placeholder="Age"
-          />
+          <div class="form-input-group">
+            <label class="form__label" for="eyeColor">Eye colour</label>
+            <input
+              id="form__eyeColor"
+              class="form__input"
+              name="eyeColor"
+              type="text"
+              :value="profile ? profile.eyeColor : ''"
+              placeholder="Eye Colour"
+            />
+          </div>
+          <div class="form-input-group">
+            <label class="form__label" for="gender">Gender</label>
+            <input
+              id="form__gender"
+              class="form__input"
+              name="gender"
+              type="text"
+              :value="profile ? profile.gender : ''"
+              placeholder="Gender"
+            />
+          </div>
         </div>
-        <!-- <input
-          type="text"
-          :value="profile ? profile.eyeColor : ''"
-          placeholder="Eye Colour"
-        />
-        <input
-          type="text"
-          :value="profile ? profile.gender : ''"
-          placeholder="Gender"
-        />
-        <input
-          type="text"
-          :value="profile ? profile.location.latitude : ''"
-          placeholder="Latitude"
-        />
-        <input
-          type="text"
-          :value="profile ? profile.location.longitude : ''"
-          placeholder="Longitude"
-        />
-        <input
-          type="text"
-          :value="profile ? profile.preferences.pet : ''"
-          placeholder="Favourite Pet"
-        />
-        <input
-          type="text"
-          :value="profile ? profile.preferences.fruit : ''"
-          placeholder="Favourite Fruit"
-        /> -->
+        <h3 class="form__title">Location</h3>
+        <div class="form-group">
+          <div class="form-input-group">
+            <label class="form__label" for="latitude">Latitude</label>
+            <input
+              id="form__latitude"
+              class="form__input"
+              name="latitude"
+              type="text"
+              :value="profile ? profile.location.latitude : ''"
+              placeholder="Latitude"
+            />
+          </div>
+          <div class="form-input-group">
+            <label class="form__label" for="longitude">Longitude</label>
+            <input
+              id="form__longitude"
+              class="form__input"
+              name="longitude"
+              type="text"
+              :value="profile ? profile.location.longitude : ''"
+              placeholder="Longitude"
+            />
+          </div>
+        </div>
+
+        <h3 class="form__title">Preferences</h3>
+        <div class="form-group">
+          <div class="form-input-group">
+            <label class="form__label" for="pet">Pet</label>
+            <input
+              id="form__pet"
+              class="form__input"
+              name="pet"
+              type="text"
+              :value="profile ? profile.preferences.pet : ''"
+              placeholder="Favourite Pet"
+            />
+          </div>
+          <div class="form-input-group">
+            <label class="form__label" for="fruit">Fruit</label>
+            <input
+              id="form__fruit"
+              class="form__input"
+              name="fruit"
+              type="text"
+              :value="profile ? profile.preferences.fruit : ''"
+              placeholder="Favourite Fruit"
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="modal__buttons">
+            <button
+              class="button button--green"
+              type="submit"
+              @click="saveChanges"
+            >
+              Save
+            </button>
+            <button class="button" @click="updateShow">Cancel</button>
+          </div>
+        </div>
       </form>
-      <div class="modal__buttons">
-        <button
-          class="button button--green"
-          type="submit"
-          @click="saveChanges(profile)"
-        >
-          Save
-        </button>
-        <button class="button" @click="updateShow">Cancel</button>
-      </div>
     </div>
   </div>
 </template>
@@ -76,7 +126,7 @@ export default {
     show: Boolean,
     profile: Object
   },
-  setup() {
+  data() {
     return {
       name: '',
       age: 0,
@@ -93,9 +143,10 @@ export default {
     updateShow() {
       this.$emit('updatedShow', !this.show);
     },
-    saveChanges(profile) {
+    saveChanges(event) {
+      event.preventDefault();
       this.$emit('saveProfileChanges profile');
-      console.log('Save changes', profile.name.value);
+      // console.log('Save changes', profile.name.value);
       this.updateShow();
     }
   }
@@ -118,7 +169,6 @@ export default {
 .modal__container {
   position: relative;
   width: 50vw;
-  padding: 20px;
   margin: 0 auto;
   background: #fff;
   border-radius: 5px;
@@ -127,6 +177,53 @@ export default {
 }
 
 .modal--show {
+  position: fixed;
   display: block;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  display: flex;
+  padding: 5px 0;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.form__label {
+  color: var(--secondary-color);
+  display: block;
+  text-align: left;
+  font-size: 0.8em;
+  padding: 2px 0;
+}
+
+.form__input {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  border: none;
+  padding: 10px;
+  font-size: 1em;
+  color: #2c3e50;
+  background-color: #e8e8e8;
+  border: 1px solid #e8e8e8;
+  border-bottom-color: #c7c7c7;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+}
+
+.form__input:focus,
+.form__input:focus-visible {
+  bottom: 2px;
+  background-color: #fff;
+  border-bottom-color: #fff;
+  outline: none;
+  cursor: text;
+  box-shadow: 0 3px 4px -2px rgba(0, 0, 0, 0.2);
 }
 </style>

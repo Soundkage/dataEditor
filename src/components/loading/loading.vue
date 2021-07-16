@@ -22,23 +22,15 @@ export default {
 
 <style>
 .loading {
-  position: absolute;
   width: 100%;
   height: 100%;
   font-weight: bold;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
 .loading__container {
-  position: relative;
-  top: 50%;
-  width: 300px;
+  width: 100%;
   margin: auto;
   border-radius: 10px;
-  transform: translateY(-50%);
   padding: 20px;
 }
 

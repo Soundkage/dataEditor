@@ -1,56 +1,58 @@
 <template>
-  <div class="table profile-table">
-    <div class="table__head">
-      <div class="table__row">
-        <div class="table__cell">User Profiles</div>
-      </div>
-    </div>
-    <div class="table__body">
-      <Loading :component-name="'Profile table'" v-if="isLoading" />
-      <div
+  <table v-if="!isLoading" class="table profile-table">
+    <thead class="table__head">
+      <tr class="table__row">
+        <td class="table__cell">Name</td>
+        <td class="table__cell">Age</td>
+        <td class="table__cell">Eye Colour</td>
+        <td class="table__cell">Gender</td>
+      </tr>
+    </thead>
+    <tbody class="table__body">
+      <tr
         class="table__row"
         :key="profile._id"
         v-for="profile in profiles"
         @click="onRowClicked(profile)"
       >
-        <div class="table__cell">{{ profile.name }}</div>
-      </div>
-    </div>
-  </div>
+        <td class="table__cell">{{ profile.name }}</td>
+        <td class="table__cell">{{ profile.age }}</td>
+        <td class="table__cell">{{ profile.eyeColor }}</td>
+        <td class="table__cell">{{ profile.gender }}</td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script>
-import Loading from '../loading/loading.vue';
-import store from '../../store';
+// import Loading from '../loading/loading.vue';
+// import store from '../../store';
 
 export default {
   name: 'ProfileList',
   props: {
     profiles: Object
   },
-  components: {
-    Loading
-  },
+  // components: {
+  //   Loading
+  // },
   emits: ['row-clicked'],
   methods: {
-    onRowClicked: profile => {
+    onRowClicked(profile) {
       this.$emit('row-clicked', profile);
-      console.log('row clicked');
     }
-  },
-  computed: {
-    isLoading: () => store.getters.isLoading
   }
 };
 </script>
 
 <style>
 .table {
-  width: 60vw;
+  width: 100%;
   margin: auto;
   border: 1px solid #ececec;
   border-bottom-color: #c7c7c7;
   border-radius: 5px;
+  border-spacing: 0;
   box-shadow: 0px 5px 8px -5px rgba(0, 0, 0, 0.2);
 }
 
@@ -60,6 +62,13 @@ export default {
   font-weight: bold;
   border-radius: 5px 5px 0 0;
   color: #42b983;
+}
+
+.table__head .table__cell:first-child {
+  border-radius: 5px 0 0 0;
+}
+.table__head .table__cell:last-child {
+  border-radius: 0 5px 0 0;
 }
 
 .table__head .table__row,
@@ -90,6 +99,7 @@ export default {
 .table__row {
   cursor: pointer;
   border-bottom: 1px solid #ececec;
+  text-align: left;
 }
 
 .table__row:last-child {

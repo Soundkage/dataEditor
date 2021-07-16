@@ -27,7 +27,6 @@ export default {
 <style>
 .search {
   margin: 0 auto 20px;
-  width: 60vw;
 }
 
 .searchbar__input {

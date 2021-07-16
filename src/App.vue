@@ -1,8 +1,4 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Profiles</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
   <router-view />
 </template>
 
@@ -18,6 +14,11 @@
 
 * {
   box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
 }
 
 #app {

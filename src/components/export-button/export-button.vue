@@ -34,4 +34,15 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.export {
+  position: absolute;
+  top: 0;
+  right: 0;
+  line-height: 80px;
+}
+
+.export .button {
+  margin: 0;
+}
+</style>
