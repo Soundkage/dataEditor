@@ -4,19 +4,9 @@
     <ExportButton :data="peopleData" />
     <ProfileSearch @searching="updateFromSearch" />
     <Loading v-if="isLoading" :component-name="'Profile table'" />
-    <ProfileList
-      v-if="!isLoading"
-      :profiles="listToLoad"
-      @row-clicked="rowClicked"
-    />
+    <ProfileList v-if="!isLoading" :profiles="listToLoad" />
     <Pagination v-if="!isLoading" @changePage="loadPage" />
   </div>
-  <Modal
-    :show="showModal"
-    :profile="profileData"
-    @updated-show="updateShowModal"
-    @save-profile-changes="updatePeopleData"
-  />
 </template>
 
 <script>
@@ -26,14 +16,11 @@ import ProfileList from '../components/profile-list/profile-list.vue';
 import ExportButton from '../components/export-button/export-button.vue';
 import Pagination from '../components/pagination/pagination.vue';
 import Loading from '../components/loading/loading.vue';
-import Modal from '../components/modal/modal.vue';
 import store from '../store';
 import { onBeforeMount, ref } from '@vue/runtime-core';
 
 const peopleData = ref(null);
 const listToLoad = ref(null);
-const showModal = ref(false);
-const profileData = ref(null);
 
 export default {
   name: 'Profiles',
@@ -78,7 +65,6 @@ export default {
           store.commit('SET_PROFILE_DATA_TO_LOAD', people);
           store.commit('SET_ISLOADING', false);
 
-          // TODO: Refactor where possible with regards to vuex store
           peopleData.value = people; // Need to keep an unedited copy in mem
         })
         .catch(error => {
@@ -94,8 +80,6 @@ export default {
     return {
       peopleData,
       listToLoad,
-      showModal,
-      profileData,
       loadPage
     };
   },
@@ -105,7 +89,6 @@ export default {
     ExportButton,
     Pagination,
     Loading,
-    Modal,
     Header
   },
   methods: {
@@ -120,17 +103,6 @@ export default {
       });
       store.commit('SET_PROFILE_DATA_TO_LOAD', newList);
       listToLoad.value = newList;
-    },
-    rowClicked(profile) {
-      showModal.value = true;
-      profileData.value = profile;
-      console.log(profile);
-    },
-    updateShowModal(show) {
-      showModal.value = show;
-    },
-    updatePeopleData() {
-      console.log('Profiles updatePeopleData');
     }
   },
   computed: {

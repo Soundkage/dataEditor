@@ -65,6 +65,10 @@ export default {
 </script>
 
 <style>
+.pagination .button {
+  margin: 10px 5px;
+}
+
 .list {
   list-style: none;
   padding: 0;
@@ -88,5 +92,11 @@ export default {
 .list__item--disabled {
   pointer-events: none;
   visibility: hidden;
+}
+
+@media screen and (min-width: 820px) {
+  .pagination .button {
+    margin: 10px;
+  }
 }
 </style>

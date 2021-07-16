@@ -120,23 +120,13 @@
 </template>
 
 <script>
+import store from '../../store';
+
 export default {
   name: 'Modal',
   props: {
     show: Boolean,
-    profile: Object
-  },
-  data() {
-    return {
-      name: '',
-      age: 0,
-      eyeColor: '',
-      gender: '',
-      locationLat: '',
-      locationLong: '',
-      preferencePet: '',
-      preferenceFuit: ''
-    };
+    profileData: Object
   },
   emits: ['updatedShow', 'saveProfileChanges'],
   methods: {
@@ -145,7 +135,11 @@ export default {
     },
     saveChanges(event) {
       event.preventDefault();
-      this.$emit('saveProfileChanges profile');
+      console.log('>>>>', this.name);
+      this.$emit('saveProfileChanges', this.profile);
+
+      store.commit('UPDATE_PROFILE_DATA', this.profile);
+
       // console.log('Save changes', profile.name.value);
       this.updateShow();
     }
@@ -168,7 +162,7 @@ export default {
 
 .modal__container {
   position: relative;
-  width: 50vw;
+  width: 90vw;
   margin: 0 auto;
   background: #fff;
   border-radius: 5px;
@@ -184,12 +178,13 @@ export default {
 .form {
   display: flex;
   flex-direction: column;
+  padding: 0px 40px;
 }
 
 .form-group {
   display: flex;
   padding: 5px 0;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
 }
 
@@ -225,5 +220,20 @@ export default {
   outline: none;
   cursor: text;
   box-shadow: 0 3px 4px -2px rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (min-width: 580px) {
+  .form {
+    padding: 0;
+  }
+  .form-group {
+    flex-direction: row;
+  }
+}
+
+@media screen and (min-width: 980px) {
+  .modal__container {
+    width: 50vw;
+  }
 }
 </style>

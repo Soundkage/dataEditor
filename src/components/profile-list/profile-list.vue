@@ -1,5 +1,5 @@
 <template>
-  <table v-if="!isLoading" class="table profile-table">
+  <table class="table profile-table">
     <thead class="table__head">
       <tr class="table__row">
         <td class="table__cell">Name</td>
@@ -22,24 +22,47 @@
       </tr>
     </tbody>
   </table>
+  <Modal
+    :show="showModal"
+    :profile-data="profileToShow"
+    @updated-show="updateShowModal"
+    @save-profile-changes="updatePeopleData"
+  />
 </template>
 
 <script>
-// import Loading from '../loading/loading.vue';
-// import store from '../../store';
+import Modal from '../modal/modal.vue';
+import { ref } from '@vue/runtime-core';
+
+const showModal = ref(false);
+const profileToShow = ref(null);
 
 export default {
   name: 'ProfileList',
+  components: {
+    Modal
+  },
   props: {
     profiles: Object
   },
-  // components: {
-  //   Loading
-  // },
   emits: ['row-clicked'],
+  setup() {
+    return {
+      showModal,
+      profileToShow
+    };
+  },
   methods: {
     onRowClicked(profile) {
-      this.$emit('row-clicked', profile);
+      profileToShow.value = profile;
+      showModal.value = !showModal.value;
+      // this.$emit('row-clicked', profile._id);
+    },
+    updateShowModal(show) {
+      showModal.value = show;
+    },
+    updatePeopleData(name) {
+      console.log('Profiles updatePeopleData', name);
     }
   }
 };
@@ -98,7 +121,6 @@ export default {
 
 .table__row {
   cursor: pointer;
-  border-bottom: 1px solid #ececec;
   text-align: left;
 }
 
@@ -124,5 +146,6 @@ export default {
 
 .table__cell {
   padding: 20px;
+  border-bottom: 1px solid #ececec;
 }
 </style>

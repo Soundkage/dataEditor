@@ -30,6 +30,11 @@ const store = createStore({
     },
     SET_ACTIVE_PAGE(state, data) {
       state.activePage = data;
+    },
+    UPDATE_PROFILE_DATA(state, data) {
+      console.log('>>>> store - ', data);
+      let listToUpdate = state.profileDataToLoad;
+      console.log('>>>> store - ', listToUpdate);
     }
   },
   getters: {
@@ -38,7 +43,12 @@ const store = createStore({
     totalListLength: state => Object.keys(state.profileData).length,
     numberOfPages: state => state.numberOfPages,
     getActivePage: state => state.activePage,
-    getnumItemsPerPage: state => state.numItemsPerPage
+    getnumItemsPerPage: state => state.numItemsPerPage,
+    getSingleProfile: state => {
+      let profile = state.profileData;
+      console.log('<><><>', profile);
+      // let x = profile.find;
+    }
   }
 });
 
