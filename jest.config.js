@@ -9,5 +9,5 @@ module.exports = {
   coverageDirectory: './coverage',
   coveragePathIgnorePatterns: ['/node_modules/'],
   coverageReporters: ['lcovonly', 'text'],
-  testMatch: ['**/*Spec.ts']
+  testMatch: ['**/*headerSpec.js', '**/*Spec.ts']
 };
