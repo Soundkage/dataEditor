@@ -49,7 +49,7 @@ export default {
     },
     navigateLeft() {
       activePageNum.value--;
-      store.commit('SET_ACTIVE_PAGE', activePageNum);
+      store.commit('SET_ACTIVE_PAGE', activePageNum.value);
       this.$emit('changePage');
     },
     navigateRight() {

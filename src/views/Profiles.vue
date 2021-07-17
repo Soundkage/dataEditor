@@ -7,7 +7,7 @@
     <ProfileList
       v-if="!isLoading"
       :profiles="listToLoad"
-      @reload-list="reloadList"
+      @reload-list="loadPage"
     />
     <Pagination v-if="!isLoading" @changePage="loadPage" />
   </div>
@@ -37,7 +37,9 @@ export default {
       let endIndex =
         activePage === 1 ? itemsPerPage : itemsPerPage * activePage;
 
-      listToLoad.value = peopleData.value.filter(
+      const profileData = store.getters.getProfileData;
+
+      listToLoad.value = profileData.filter(
         (person, index) => startIndex <= index && index < endIndex
       );
     };
@@ -103,14 +105,11 @@ export default {
         );
       });
       store.commit('SET_PROFILE_DATA_TO_LOAD', newList);
-      listToLoad.value = newList;
+      this.loadPage();
     }
   },
   computed: {
-    isLoading: () => store.getters.isLoading,
-    reloadList: () => {
-      listToLoad.value = store.getters.getProfileData;
-    }
+    isLoading: () => store.getters.isLoading
   }
 };
 </script>
