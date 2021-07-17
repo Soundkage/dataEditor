@@ -11,9 +11,6 @@ import store from '../../store';
 
 export default {
   name: 'ExportButton',
-  props: {
-    data: Object
-  },
   methods: {
     exportList: () => {
       const exportData = store.getters.getProfileData || null;

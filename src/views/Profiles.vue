@@ -1,7 +1,7 @@
 <template>
   <div class="profiles">
     <Header class="profiles-header" :title="'Profiles'" />
-    <ExportButton :data="peopleData" />
+    <ExportButton />
     <ProfileSearch @searching="updateFromSearch" />
     <Loading v-if="isLoading" :component-name="'Profile table'" />
     <ProfileList
