@@ -8,7 +8,18 @@ const store = createStore({
     pagination: [],
     numberOfPages: [],
     activePage: 1,
-    numItemsPerPage: 10
+    numItemsPerPage: 10,
+    formData: {
+      _id: '',
+      name: '',
+      age: 0,
+      eyeColor: '',
+      gender: '',
+      latitude: '',
+      longitude: '',
+      pet: '',
+      fruit: ''
+    }
   },
   mutations: {
     SET_ISLOADING(state, loadingState) {
@@ -31,10 +42,35 @@ const store = createStore({
     SET_ACTIVE_PAGE(state, data) {
       state.activePage = data;
     },
+    SET_FORM_DATA(state, data) {
+      state.formData = {
+        _id: data._id || '',
+        name: data._name || '',
+        age: data._age || 0,
+        eyeColor: data.eyeColor || '',
+        gender: data.gender || '',
+        latitude: data.location.latitude || '',
+        longitude: data.location.longitude || '',
+        pet: data.preferences.pet || '',
+        fruit: data.preferences.fruit || ''
+      };
+    },
     UPDATE_PROFILE_DATA(state, data) {
+      console.log('>>>> state', state.formData.name);
       console.log('>>>> store - ', data);
-      let listToUpdate = state.profileDataToLoad;
-      console.log('>>>> store - ', listToUpdate);
+      state.formData._id = data.profileId;
+      state.formData[data.inputName] = data.value;
+
+      console.log('<><><><><>', state.formData);
+    }
+  },
+  actions: {
+    updateProfileData(context) {
+      const profile = context.getters.getProfileById(
+        context.state.formData._id
+      );
+
+      console.log('actions profileDataToUse', profile);
     }
   },
   getters: {
@@ -44,11 +80,10 @@ const store = createStore({
     numberOfPages: state => state.numberOfPages,
     getActivePage: state => state.activePage,
     getnumItemsPerPage: state => state.numItemsPerPage,
-    getSingleProfile: state => {
-      let profile = state.profileData;
-      console.log('<><><>', profile);
-      // let x = profile.find;
-    }
+    getProfileById: state => profileId =>
+      Object.values(state.profileDataToLoad).find(
+        item => item._id === profileId
+      )
   }
 });
 

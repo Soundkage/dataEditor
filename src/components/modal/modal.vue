@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" :class="{ 'modal--show': show }">
+  <div class="modal" :class="{ 'modal--show': showModal }">
     <div class="modal__container">
       <form class="form">
         <h3 class="form__title">Details</h3>
@@ -11,8 +11,9 @@
               class="form__input"
               name="name"
               type="text"
-              :value="profile ? profile.name : ''"
-              placeholder="Name"
+              v-model="name"
+              :placeholder="profileData?.name ? profileData.name : 'Name'"
+              @change="updateData"
             />
           </div>
           <div class="form-input-group">
@@ -22,8 +23,9 @@
               class="form__input"
               name="age"
               type="number"
-              :value="profile ? profile.age : 0"
-              placeholder="Age"
+              v-model="age"
+              :placeholder="profileData?.age ? profileData.age : 'Age'"
+              @change="updateData"
             />
           </div>
         </div>
@@ -35,8 +37,11 @@
               class="form__input"
               name="eyeColor"
               type="text"
-              :value="profile ? profile.eyeColor : ''"
-              placeholder="Eye Colour"
+              v-model="eyeColor"
+              :placeholder="
+                profileData?.eyeColor ? profileData.eyeColor : 'Eye Colour'
+              "
+              @change="updateData"
             />
           </div>
           <div class="form-input-group">
@@ -46,8 +51,9 @@
               class="form__input"
               name="gender"
               type="text"
-              :value="profile ? profile.gender : ''"
-              placeholder="Gender"
+              v-model="gender"
+              :placeholder="profileData?.gender ? profileData.gender : 'Gender'"
+              @change="updateData"
             />
           </div>
         </div>
@@ -60,8 +66,13 @@
               class="form__input"
               name="latitude"
               type="text"
-              :value="profile ? profile.location.latitude : ''"
-              placeholder="Latitude"
+              v-model="latitude"
+              :placeholder="
+                profileData?.location.latitude
+                  ? profileData.location.latitude
+                  : 'Latitude'
+              "
+              @change="updateData"
             />
           </div>
           <div class="form-input-group">
@@ -71,8 +82,13 @@
               class="form__input"
               name="longitude"
               type="text"
-              :value="profile ? profile.location.longitude : ''"
-              placeholder="Longitude"
+              v-model="longitude"
+              :placeholder="
+                profileData?.location.longitude
+                  ? profileData.location.longitude
+                  : 'Longitude'
+              "
+              @change="updateData"
             />
           </div>
         </div>
@@ -86,8 +102,13 @@
               class="form__input"
               name="pet"
               type="text"
-              :value="profile ? profile.preferences.pet : ''"
-              placeholder="Favourite Pet"
+              v-model="pet"
+              :placeholder="
+                profileData?.preferences.pet
+                  ? profileData.preferences.pet
+                  : 'Pet'
+              "
+              @change="updateData"
             />
           </div>
           <div class="form-input-group">
@@ -97,21 +118,21 @@
               class="form__input"
               name="fruit"
               type="text"
-              :value="profile ? profile.preferences.fruit : ''"
-              placeholder="Favourite Fruit"
+              v-model="fruit"
+              :placeholder="
+                profileData?.preferences.fruit
+                  ? profileData.preferences.fruit
+                  : 'Fruit'
+              "
+              @change="updateData"
             />
           </div>
         </div>
         <div class="form-group">
           <div class="modal__buttons">
-            <button
-              class="button button--green"
-              type="submit"
-              @click="saveChanges"
-            >
-              Save
+            <button type="button" class="button" @click="closeModal">
+              Close
             </button>
-            <button class="button" @click="updateShow">Cancel</button>
           </div>
         </div>
       </form>
@@ -125,23 +146,22 @@ import store from '../../store';
 export default {
   name: 'Modal',
   props: {
-    show: Boolean,
-    profileData: Object
+    profileData: Object,
+    showModal: Boolean
   },
-  emits: ['updatedShow', 'saveProfileChanges'],
+  emits: ['saveProfileChanges', 'closeModal'],
   methods: {
-    updateShow() {
-      this.$emit('updatedShow', !this.show);
+    closeModal() {
+      this.$emit('closeModal');
     },
-    saveChanges(event) {
-      event.preventDefault();
-      console.log('>>>>', this.name);
-      this.$emit('saveProfileChanges', this.profile);
-
-      store.commit('UPDATE_PROFILE_DATA', this.profile);
-
-      // console.log('Save changes', profile.name.value);
-      this.updateShow();
+    updateData(event) {
+      const inputData = {
+        profileId: this.profileData._id,
+        inputName: event.srcElement.name,
+        value: event.target.value
+      };
+      store.commit('UPDATE_PROFILE_DATA', inputData);
+      store.dispatch('updateProfileData');
     }
   }
 };

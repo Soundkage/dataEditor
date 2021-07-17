@@ -1,6 +1,6 @@
 <template>
   <div class="pagination">
-    <ul class="list">
+    <ul class="list" v-if="numOfPages > 1">
       <li
         class="button list__item"
         :class="activePageNum === 1 ? 'list__item--disabled' : ''"
@@ -59,7 +59,8 @@ export default {
     }
   },
   computed: {
-    pages: () => store.getters.numberOfPages
+    pages: () => store.getters.numberOfPages,
+    numOfPages: () => store.getters.numberOfPages
   }
 };
 </script>

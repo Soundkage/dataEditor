@@ -23,15 +23,15 @@
     </tbody>
   </table>
   <Modal
-    :show="showModal"
+    :showModal="showModal"
     :profile-data="profileToShow"
-    @updated-show="updateShowModal"
-    @save-profile-changes="updatePeopleData"
+    @close-modal="closeModalClicked"
   />
 </template>
 
 <script>
 import Modal from '../modal/modal.vue';
+import store from '../../store';
 import { ref } from '@vue/runtime-core';
 
 const showModal = ref(false);
@@ -54,15 +54,12 @@ export default {
   },
   methods: {
     onRowClicked(profile) {
+      store.commit('SET_FORM_DATA', profile);
       profileToShow.value = profile;
-      showModal.value = !showModal.value;
-      // this.$emit('row-clicked', profile._id);
+      showModal.value = true;
     },
-    updateShowModal(show) {
-      showModal.value = show;
-    },
-    updatePeopleData(name) {
-      console.log('Profiles updatePeopleData', name);
+    closeModalClicked() {
+      showModal.value = false;
     }
   }
 };
