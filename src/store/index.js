@@ -45,8 +45,8 @@ const store = createStore({
     SET_FORM_DATA(state, data) {
       state.formData = {
         _id: data._id || '',
-        name: data._name || '',
-        age: data._age || 0,
+        name: data.name || '',
+        age: data.age || 0,
         eyeColor: data.eyeColor || '',
         gender: data.gender || '',
         latitude: data.location.latitude || '',
@@ -56,21 +56,24 @@ const store = createStore({
       };
     },
     UPDATE_PROFILE_DATA(state, data) {
-      console.log('>>>> state', state.formData.name);
-      console.log('>>>> store - ', data);
       state.formData._id = data.profileId;
       state.formData[data.inputName] = data.value;
-
-      console.log('<><><><><>', state.formData);
     }
   },
   actions: {
     updateProfileData(context) {
-      const profile = context.getters.getProfileById(
-        context.state.formData._id
-      );
-
-      console.log('actions profileDataToUse', profile);
+      Object.values(context.state.profileDataToLoad).forEach(profile => {
+        if (profile._id === context.state.formData._id) {
+          profile.name = context.state.formData.name;
+          profile.age = context.state.formData.age;
+          profile.eyeColor = context.state.formData.eyeColor;
+          profile.gender = context.state.formData.gender;
+          profile.location.latitude = context.state.formData.latitude;
+          profile.location.longitude = context.state.formData.longitude;
+          profile.preferences.pet = context.state.formData.pet;
+          profile.preferences.fruit = context.state.formData.fruit;
+        }
+      });
     }
   },
   getters: {

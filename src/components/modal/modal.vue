@@ -1,5 +1,10 @@
 <template>
-  <div class="modal" :class="{ 'modal--show': showModal }">
+  <div
+    id="modal-profile"
+    class="modal"
+    :class="{ 'modal--show': showModal }"
+    @click="containerClicked"
+  >
     <div class="modal__container">
       <form class="form">
         <h3 class="form__title">Details</h3>
@@ -11,8 +16,7 @@
               class="form__input"
               name="name"
               type="text"
-              v-model="name"
-              :placeholder="profileData?.name ? profileData.name : 'Name'"
+              :value="profileData?.name ? profileData.name : 'Name'"
               @change="updateData"
             />
           </div>
@@ -23,8 +27,7 @@
               class="form__input"
               name="age"
               type="number"
-              v-model="age"
-              :placeholder="profileData?.age ? profileData.age : 'Age'"
+              :value="profileData?.age ? profileData.age : 'Age'"
               @change="updateData"
             />
           </div>
@@ -37,8 +40,7 @@
               class="form__input"
               name="eyeColor"
               type="text"
-              v-model="eyeColor"
-              :placeholder="
+              :value="
                 profileData?.eyeColor ? profileData.eyeColor : 'Eye Colour'
               "
               @change="updateData"
@@ -51,8 +53,7 @@
               class="form__input"
               name="gender"
               type="text"
-              v-model="gender"
-              :placeholder="profileData?.gender ? profileData.gender : 'Gender'"
+              :value="profileData?.gender ? profileData.gender : 'Gender'"
               @change="updateData"
             />
           </div>
@@ -66,9 +67,8 @@
               class="form__input"
               name="latitude"
               type="text"
-              v-model="latitude"
-              :placeholder="
-                profileData?.location.latitude
+              :value="
+                profileData?.location?.latitude
                   ? profileData.location.latitude
                   : 'Latitude'
               "
@@ -82,9 +82,8 @@
               class="form__input"
               name="longitude"
               type="text"
-              v-model="longitude"
-              :placeholder="
-                profileData?.location.longitude
+              :value="
+                profileData?.location?.longitude
                   ? profileData.location.longitude
                   : 'Longitude'
               "
@@ -102,9 +101,8 @@
               class="form__input"
               name="pet"
               type="text"
-              v-model="pet"
-              :placeholder="
-                profileData?.preferences.pet
+              :value="
+                profileData?.preferences?.pet
                   ? profileData.preferences.pet
                   : 'Pet'
               "
@@ -118,9 +116,8 @@
               class="form__input"
               name="fruit"
               type="text"
-              v-model="fruit"
-              :placeholder="
-                profileData?.preferences.fruit
+              :value="
+                profileData?.preferences?.fruit
                   ? profileData.preferences.fruit
                   : 'Fruit'
               "
@@ -149,7 +146,7 @@ export default {
     profileData: Object,
     showModal: Boolean
   },
-  emits: ['saveProfileChanges', 'closeModal'],
+  emits: ['profileUpdated', 'closeModal'],
   methods: {
     closeModal() {
       this.$emit('closeModal');
@@ -160,8 +157,15 @@ export default {
         inputName: event.srcElement.name,
         value: event.target.value
       };
+
       store.commit('UPDATE_PROFILE_DATA', inputData);
       store.dispatch('updateProfileData');
+      this.$emit('profileUpdated');
+    },
+    containerClicked(event) {
+      if (event.srcElement.id === 'modal-profile') {
+        this.closeModal();
+      }
     }
   }
 };

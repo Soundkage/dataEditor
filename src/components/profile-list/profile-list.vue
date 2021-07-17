@@ -26,6 +26,7 @@
     :showModal="showModal"
     :profile-data="profileToShow"
     @close-modal="closeModalClicked"
+    @profile-updated="reload"
   />
 </template>
 
@@ -45,7 +46,7 @@ export default {
   props: {
     profiles: Object
   },
-  emits: ['row-clicked'],
+  emits: ['row-clicked', 'reloadList'],
   setup() {
     return {
       showModal,
@@ -60,6 +61,9 @@ export default {
     },
     closeModalClicked() {
       showModal.value = false;
+    },
+    reload() {
+      this.$emit('reloadList');
     }
   }
 };

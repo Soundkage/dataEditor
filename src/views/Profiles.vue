@@ -4,7 +4,11 @@
     <ExportButton :data="peopleData" />
     <ProfileSearch @searching="updateFromSearch" />
     <Loading v-if="isLoading" :component-name="'Profile table'" />
-    <ProfileList v-if="!isLoading" :profiles="listToLoad" />
+    <ProfileList
+      v-if="!isLoading"
+      :profiles="listToLoad"
+      @reload-list="reloadList"
+    />
     <Pagination v-if="!isLoading" @changePage="loadPage" />
   </div>
 </template>
@@ -92,10 +96,7 @@ export default {
     Header
   },
   methods: {
-    exportList() {
-      console.log('Export list');
-    },
-    updateFromSearch: searchString => {
+    updateFromSearch(searchString) {
       const newList = Object.values(peopleData.value).filter(person => {
         return (
           person.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1
@@ -106,7 +107,10 @@ export default {
     }
   },
   computed: {
-    isLoading: () => store.getters.isLoading
+    isLoading: () => store.getters.isLoading,
+    reloadList: () => {
+      listToLoad.value = store.getters.getProfileData;
+    }
   }
 };
 </script>
