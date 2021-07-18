@@ -27,7 +27,7 @@
               class="form__input"
               name="age"
               type="number"
-              :value="profileData?.age ? profileData.age : 'Age'"
+              :value="profileData?.age ? profileData.age : 0"
               @change="updateData"
             />
           </div>
