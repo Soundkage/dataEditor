@@ -26,7 +26,7 @@ const profileDataToLoad = [
 store.replaceState({ profileDataToLoad });
 global.URL.createObjectURL = jest.fn(() => {});
 
-describe('ExportButton', () => {
+describe('ExportButton Component', () => {
   it('should render the export button', () => {
     const wrapper = mount(ExportButton);
 
@@ -40,5 +40,17 @@ describe('ExportButton', () => {
     await wrapper.find('button').trigger('click');
 
     expect(profileData).toEqual(profileDataToLoad);
+  });
+
+  it('should throw error ', async () => {
+    jest.spyOn(console, 'error');
+    store.replaceState({});
+    const wrapper = mount(ExportButton);
+
+    await wrapper.find('button').trigger('click');
+
+    expect(console.error).toHaveBeenLastCalledWith(
+      '[Export] No profile data found'
+    );
   });
 });

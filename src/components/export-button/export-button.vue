@@ -25,6 +25,9 @@ export default {
         dummyLink.href = url;
         dummyLink.download = `profileList-${Date.now()}.json`;
         dummyLink.click();
+      } else {
+        // should not get here as the button won't be created if no data
+        console.error('[Export] No profile data found');
       }
     }
   }

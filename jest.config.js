@@ -10,5 +10,5 @@ module.exports = {
   coverageDirectory: './coverage',
   coveragePathIgnorePatterns: ['/node_modules/', '/src/store/'],
   coverageReporters: ['lcovonly', 'text'],
-  testMatch: ['**/*export-button-spec.js', '**/*Spec.js', '**/*Spec.ts']
+  testMatch: ['**/*pagination.spec.js', '**/*Spec.js', '**/*Spec.ts']
 };
